@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ShoppingCart, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { addToCart } from "@/redux/slices/cartSlice";
+import { toast } from "sonner";
 
 interface Product {
   id: number;
@@ -18,6 +21,13 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    toast.success(`${product.title} added to cart!`);
+  };
+
   return (
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-lg">
       <div className="relative h-48 overflow-hidden bg-gray-100">
@@ -54,6 +64,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <CardFooter className="px-4 pb-4 pt-0 flex gap-2">
         <Button 
           className="w-full gap-2 bg-blue-600 hover:bg-blue-500"
+          onClick={handleAddToCart}
         >
           <ShoppingCart className="h-4 w-4" />
           Add to Cart
